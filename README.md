@@ -5,7 +5,7 @@
 ## Notes 17 Feb 2025
 - [x] Create landing page
 - [x] Create dashboard
-- [ ] Create sign in and sign up
+- [x] Create sign in and sign up
 - [ ] Edit dashboard for subscriptions
 - [ ] Create Schema and database
 - [ ] Add payment (Stripe)

@@ -1,6 +1,31 @@
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Signup() {
+  const [passwords, setPasswords] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPasswords(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwords.password !== passwords.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    setError("");
+    // Continue with form submission
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
       <div className="container mx-auto flex min-h-screen items-center justify-center px-4">
@@ -57,7 +82,7 @@ export default function Signup() {
               </div>
             </div>
 
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Full name
@@ -97,8 +122,30 @@ export default function Signup() {
                   required
                   className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
                   placeholder="••••••••"
+                  value={passwords.password}
+                  onChange={handlePasswordChange}
                 />
               </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
+                  placeholder="••••••••"
+                  value={passwords.confirmPassword}
+                  onChange={handlePasswordChange}
+                />
+              </div>
+
+              {error && (
+                <p className="text-sm text-red-600">{error}</p>
+              )}
 
               <button
                 type="submit"
