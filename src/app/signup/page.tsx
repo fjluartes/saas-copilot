@@ -1,30 +1,63 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Signup() {
-  const [passwords, setPasswords] = useState({
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPasswords(prev => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
+  useEffect(() => {
+    // Password validation
+    if (formData.password) {
+      if (formData.password.length < 8) {
+        setErrors(prev => ({
+          ...prev,
+          password: "Password must be at least 8 characters long"
+        }));
+      } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(formData.password)) {
+        setErrors(prev => ({
+          ...prev,
+          password: "Password must contain uppercase, lowercase, and numbers"
+        }));
+      } else {
+        setErrors(prev => ({ ...prev, password: "" }));
+      }
+    }
+
+    // Confirm password validation
+    if (formData.confirmPassword && formData.password !== formData.confirmPassword) {
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword: "Passwords do not match"
+      }));
+    } else {
+      setErrors(prev => ({ ...prev, confirmPassword: "" }));
+    }
+  }, [formData.password, formData.confirmPassword]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwords.password !== passwords.confirmPassword) {
-      setError("Passwords do not match");
+    if (errors.password || errors.confirmPassword) {
       return;
     }
-    setError("");
     // Continue with form submission
+    console.log("Form submitted:", formData);
   };
 
   return (
@@ -95,6 +128,8 @@ export default function Signup() {
                   required
                   className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
                   placeholder="John Doe"
+                  value={formData.name}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -109,6 +144,8 @@ export default function Signup() {
                   required
                   className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
                   placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -121,11 +158,16 @@ export default function Signup() {
                   name="password"
                   type="password"
                   required
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
+                  className={`mt-1 block w-full rounded-lg border ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  } px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
                   placeholder="••••••••"
-                  value={passwords.password}
-                  onChange={handlePasswordChange}
+                  value={formData.password}
+                  onChange={handleChange}
                 />
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                )}
               </div>
 
               <div>
@@ -137,20 +179,22 @@ export default function Signup() {
                   name="confirmPassword"
                   type="password"
                   required
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
+                  className={`mt-1 block w-full rounded-lg border ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                  } px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
                   placeholder="••••••••"
-                  value={passwords.confirmPassword}
-                  onChange={handlePasswordChange}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                 />
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                )}
               </div>
-
-              {error && (
-                <p className="text-sm text-red-600">{error}</p>
-              )}
 
               <button
                 type="submit"
                 className="w-full rounded-lg bg-purple-600 px-4 py-2 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                disabled={!!errors.password || !!errors.confirmPassword}
               >
                 Sign up
               </button>

@@ -1,30 +1,46 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import { pgTable, serial, text, integer, numeric, timestamp, boolean } from "drizzle-orm/pg-core";
 
-import { sql } from "drizzle-orm";
-import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
+// Database connection
+const connection = postgres(process.env.DATABASE_URL!);
+export const db = drizzle(connection);
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = sqliteTableCreator((name) => `saas-copilot_${name}`);
+// Users table
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  email: text("email").unique().notNull(),
+  name: text("name").notNull(),
+  passwordHash: text("password_hash").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
 
-export const posts = createTable(
-  "post",
-  {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }),
-    createdAt: int("created_at", { mode: "timestamp" })
-      .default(sql`(unixepoch())`)
-      .notNull(),
-    updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-      () => new Date()
-    ),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+// Subscriptions table
+export const subscriptions = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  plan: text("plan").notNull(),
+  status: text("status").notNull(),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  expiresAt: timestamp("expires_at").notNull(),
+});
+
+// Payments table
+export const payments = pgTable("payments", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  subscriptionId: integer("subscription_id").notNull().references(() => subscriptions.id),
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+  status: text("status").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// API keys for integrations
+export const apiKeys = pgTable("api_keys", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  key: text("key").unique().notNull(),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
