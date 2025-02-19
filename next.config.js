@@ -8,9 +8,6 @@ const config = {
     typescript: {
         ignoreBuildErrors: true,
     },
-    drizzle: {
-        ignoreBuildErrors: true,
-    }
 };
 
 export default config;
