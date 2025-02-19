@@ -1,81 +1,21 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import SignupForm from "~/app/_components/signup-form";
 
-export default function Signup() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({
-    password: "",
-    confirmPassword: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  useEffect(() => {
-    // Password validation
-    if (formData.password) {
-      if (formData.password.length < 8) {
-        setErrors(prev => ({
-          ...prev,
-          password: "Password must be at least 8 characters long"
-        }));
-      } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(formData.password)) {
-        setErrors(prev => ({
-          ...prev,
-          password: "Password must contain uppercase, lowercase, and numbers"
-        }));
-      } else {
-        setErrors(prev => ({ ...prev, password: "" }));
-      }
-    }
-
-    // Confirm password validation
-    if (formData.confirmPassword && formData.password !== formData.confirmPassword) {
-      setErrors(prev => ({
-        ...prev,
-        confirmPassword: "Passwords do not match"
-      }));
-    } else {
-      setErrors(prev => ({ ...prev, confirmPassword: "" }));
-    }
-  }, [formData.password, formData.confirmPassword]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (errors.password || errors.confirmPassword) {
-      return;
-    }
-    // Continue with form submission
-    console.log("Form submitted:", formData);
-  };
-
+export default function SignupPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
       <div className="container mx-auto flex min-h-screen items-center justify-center px-4">
         <div className="w-full max-w-md">
-          {/* Logo */}
           <Link href="/" className="mb-8 block text-center">
             <h1 className="text-2xl font-bold text-white">SaaS Logo</h1>
           </Link>
 
-          {/* Signup Form */}
           <div className="rounded-lg bg-white p-8 shadow-xl">
             <h2 className="mb-6 text-center text-2xl font-bold text-gray-900">
               Create your account
             </h2>
 
-            {/* Social Sign Up */}
             <div className="mb-6 space-y-3">
               <button className="flex w-full items-center justify-center space-x-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50">
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -108,97 +48,11 @@ export default function Signup() {
                 <span className="bg-white px-2 text-gray-500">Or continue with</span>
               </div>
             </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Full name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
-                  placeholder="John Doe"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
-                  placeholder="you@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  className={`mt-1 block w-full rounded-lg border ${
-                    errors.password ? 'border-red-500' : 'border-gray-300'
-                  } px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                {errors.password && (
-                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                  Confirm Password
-                </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  className={`mt-1 block w-full rounded-lg border ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                  } px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
-                  placeholder="••••••••"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-                {errors.confirmPassword && (
-                  <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-purple-600 px-4 py-2 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                disabled={!!errors.password || !!errors.confirmPassword}
-              >
-                Sign up
-              </button>
-            </form>
+            <SignupForm />
 
             <div className="mt-6 text-center text-sm text-gray-600">
               Already have an account?{" "}
-              <Link
-                href="/login"
-                className="font-medium text-purple-600 hover:text-purple-500"
-              >
+              <Link href="/login" className="font-medium text-purple-600 hover:text-purple-500">
                 Sign in
               </Link>
             </div>
