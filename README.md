@@ -22,3 +22,6 @@
 - [x] Create dashboard
 - [x] Create sign in and sign up
 - [x] Create schema and database
+
+## Time Limit
+- 1 Month (Coding)
