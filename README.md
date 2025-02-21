@@ -26,4 +26,4 @@
 - [x] Create schema and database
 
 ## Time Limit
-- 1 Month (Coding)
+- 1 Month (until 16 Mar)
