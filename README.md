@@ -1,17 +1,19 @@
 # SaaS Copilot
 
 - SaaS template using T3 stack and GitHub Copilot
-- Subscription/Payments Management app
+- Subscription and Billing Management app
 
 ## TODO
 - [ ] Fix signup trpc routes (save to db)
 - [ ] Fix login to redirect to dashboard
 - [ ] Add auth and protected procedures
-- [ ] Edit dashboard for subscriptions
 - [ ] Edit subscriptions, payments schema
-- [ ] Check API for biz subscriptions (e.g. vercel)
+- [ ] API for subs vs subscriptions table
 - [ ] Add payment (Stripe)
 - [ ] Edit copy for landing page
+
+## DONE 22 Feb 2025
+- [x] Edit dashboard for subscriptions
 
 ## DONE 19 Feb 2025
 - [x] Adds signup form with trpc routes
