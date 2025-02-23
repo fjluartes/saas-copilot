@@ -1,6 +1,5 @@
 "use client";
 import Nav from "~/app/_components/nav";
-import Link from "next/link";
 import { useState } from "react";
 import { ManageSubscription } from "~/app/_components/manage-subscription";
 import AddSubscription from "~/app/_components/add-subscription";

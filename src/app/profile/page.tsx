@@ -1,9 +1,9 @@
 "use client";
 import Nav from "~/app/_components/nav";
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function ProfilePage() {
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  // const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50">
