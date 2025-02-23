@@ -4,6 +4,7 @@
 - Subscription and Billing Management app
 
 ## TODO
+- [ ] Add user profile, settings page
 - [ ] Fix signup trpc routes (save to db)
 - [ ] Fix login to redirect to dashboard
 - [ ] Add auth and protected procedures
@@ -11,6 +12,10 @@
 - [ ] API for subs vs subscriptions table
 - [ ] Add payment (Stripe)
 - [ ] Edit copy for landing page
+
+## DONE 23 Feb 2025
+- [x] Edits dashboard view for smaller screen
+- [x] Adds user dropdown on top right nav
 
 ## DONE 22 Feb 2025
 - [x] Edit dashboard for subscriptions
@@ -27,3 +32,9 @@
 
 ## Time Limit
 - 1 Month (until 16 Mar)
+
+## Features
+- [ ] List of Subscriptions
+- [ ] Payment Due Date
+- [ ] Active, Past Due, Cancelled
+- [ ] Manage Subscriptions (Pay or Cancel)
