@@ -12,10 +12,10 @@ export default function Home() {
           </Link>
           <div className="space-x-4">
             <Link
-              href="/login"
+              href="/signin"
               className="rounded-lg px-4 py-2 text-purple-600 hover:bg-purple-50"
             >
-              Login
+              Sign in
             </Link>
             <Link
               href="/signup"

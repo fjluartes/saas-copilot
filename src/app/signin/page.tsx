@@ -1,6 +1,37 @@
+"use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function Login() {
+export default function Signin() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      // Add your authentication logic here
+      console.log("Logging in with:", formData);
+      
+      // After successful login, redirect to dashboard
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
       <div className="container mx-auto flex min-h-screen items-center justify-center px-4">
@@ -15,7 +46,7 @@ export default function Login() {
             <h2 className="mb-6 text-center text-2xl font-bold text-gray-900">
               Welcome back
             </h2>
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
@@ -28,6 +59,8 @@ export default function Login() {
                   name="email"
                   type="email"
                   required
+                  value={formData.email}
+                  onChange={handleChange}
                   className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
                   placeholder="you@example.com"
                 />
@@ -45,6 +78,8 @@ export default function Login() {
                   name="password"
                   type="password"
                   required
+                  value={formData.password}
+                  onChange={handleChange}
                   className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
                   placeholder="••••••••"
                 />
@@ -54,8 +89,10 @@ export default function Login() {
                 <div className="flex items-center">
                   <input
                     id="remember-me"
-                    name="remember-me"
+                    name="rememberMe"
                     type="checkbox"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
                     className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                   />
                   <label

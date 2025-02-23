@@ -19,7 +19,7 @@ const SignupForm = () => {
 
   const createUser = api.user.create.useMutation({
     onSuccess: () => {
-      router.push("/login");
+      router.push("/signin");
     },
     onError: (error) => {
       console.error("Signup error:", error);
