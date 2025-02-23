@@ -8,7 +8,7 @@ export default function Dashboard() {
   const [isAddSubscriptionOpen, setIsAddSubscriptionOpen] = useState(false);
   const [subscriptionsList, setSubscriptionsList] = useState(subscriptions);
 
-  const handleAddSubscription = (newSubscription: any) => {
+/*   const handleAddSubscription = (newSubscription: any) => {
     setSubscriptionsList((prev) => [
       ...prev,
       {
@@ -16,7 +16,11 @@ export default function Dashboard() {
         ...newSubscription,
       },
     ]);
-  };
+  }; */
+
+  const handleAddSubscription = () => {
+    console.log("Added subscription");
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
