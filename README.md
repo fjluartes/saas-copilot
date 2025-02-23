@@ -11,6 +11,7 @@
 - [ ] Add auth and protected procedures
 - [ ] API for subs vs subscriptions table
 - [ ] Edit copy for landing page
+- [ ] Add card in dashboard for total bills, latest past due
 
 ## DONE 23 Feb 2025
 - [x] Edits dashboard view for smaller screen
