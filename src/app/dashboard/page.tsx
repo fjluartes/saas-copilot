@@ -3,16 +3,51 @@ import Nav from "~/app/_components/nav";
 import Link from "next/link";
 import { useState } from "react";
 import { ManageSubscription } from "~/app/_components/manage-subscription";
+import AddSubscription from "~/app/_components/add-subscription";
 
 export default function Dashboard() {
+  const [isAddSubscriptionOpen, setIsAddSubscriptionOpen] = useState(false);
+  const [subscriptionsList, setSubscriptionsList] = useState(subscriptions);
+
+  const handleAddSubscription = (newSubscription: any) => {
+    setSubscriptionsList((prev) => [
+      ...prev,
+      {
+        id: prev.length + 1,
+        ...newSubscription,
+      },
+    ]);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Nav />
       <div className="container mx-auto px-4 pt-20">
         <div className="rounded-lg bg-white p-4 shadow-md sm:p-6">
-          <h2 className="mb-6 text-lg font-semibold text-gray-900">
-            My Subscriptions
-          </h2>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900">
+              My Subscriptions
+            </h2>
+            <button
+              onClick={() => setIsAddSubscriptionOpen(true)}
+              className="inline-flex items-center rounded-lg border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              <svg
+                className="-ml-1 mr-2 h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+              Add Subscription
+            </button>
+          </div>
           <div className="hidden md:block">
             <div className="overflow-hidden">
               <table className="min-w-full">
@@ -51,7 +86,7 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {subscriptions.map((subscription, index) => (
+                  {subscriptionsList.map((subscription, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="flex items-center">
@@ -106,7 +141,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="space-y-4 md:hidden">
-            {subscriptions.map((subscription, index) => (
+            {subscriptionsList.map((subscription, index) => (
               <div
                 key={index}
                 className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
@@ -185,6 +220,12 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <AddSubscription
+        isOpen={isAddSubscriptionOpen}
+        onClose={() => setIsAddSubscriptionOpen(false)}
+        onAdd={handleAddSubscription}
+      />
     </div>
   );
 }

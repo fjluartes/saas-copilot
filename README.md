@@ -19,6 +19,7 @@
 - [x] Add user profile, settings page
 - [x] Signin to redirect to dashboard
 - [x] Adds manage subscription modal (pay/cancel)
+- [x] Adds add subscription button and modal
 
 ## DONE 22 Feb 2025
 - [x] Edit dashboard for subscriptions
