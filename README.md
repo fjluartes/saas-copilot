@@ -17,6 +17,7 @@
 - [x] Adds nav component with dashboard, profile and settings
 - [x] Add user profile, settings page
 - [x] Signin to redirect to dashboard
+- [x] Adds manage subscription modal (pay/cancel)
 
 ## DONE 22 Feb 2025
 - [x] Edit dashboard for subscriptions
