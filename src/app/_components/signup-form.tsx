@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
-import type { UserSignup } from "~/types/user";
+import type { User } from "~/types/user";
 
 export default function SignupForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState<UserSignup>({
+  const [formData, setFormData] = useState<User>({
+    id: 0,
     name: "",
     email: "",
     password: "",
