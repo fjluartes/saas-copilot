@@ -38,72 +38,58 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
-  // // Get user profile
-  // getProfile: publicProcedure
-  //   .query(async ({ ctx }) => {
-  //     const user = await ctx.db.query.users.findFirst({
-  //       where: eq(users.id, ctx.userId),
-  //     });
+  // Sign in user
+  signin: publicProcedure
+    .input(z.object({
+      email: z.string().email(),
+      password: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Find user by email
+      const user = await ctx.db.query.users.findFirst({
+        where: eq(users.email, input.email),
+      });
 
-  //     if (!user) {
-  //       throw new TRPCError({
-  //         code: 'NOT_FOUND',
-  //         message: 'User not found',
-  //       });
-  //     }
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Invalid email or password',
+        });
+      }
 
-  //     // Don't return password
-  //     const { passwordHash: _, ...userWithoutPassword } = user;
-  //     return userWithoutPassword;
-  //   }),
+      // Verify password
+      const validPassword = await bcrypt.compare(input.password, user.passwordHash);
+      if (!validPassword) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Invalid email or password',
+        });
+      }
 
-  // // Update user profile
-  // updateProfile: publicProcedure
-  //   .input(z.object({
-  //     name: z.string().min(2).optional(),
-  //     email: z.string().email().optional(),
-  //   }))
-  //   .mutation(async ({ ctx, input }) => {
-  //     return await ctx.db
-  //       .update(users)
-  //       .set(input)
-  //       .where(eq(users.id, ctx.userId));
-  //   }),
+      // Don't return password hash
+      const { passwordHash: _, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    }),
 
-  // // Change password
-  // changePassword: publicProcedure
-  //   .input(z.object({
-  //     currentPassword: z.string(),
-  //     newPassword: z.string().min(8),
-  //   }))
-  //   .mutation(async ({ ctx, input }) => {
-  //     const user = await ctx.db.query.users.findFirst({
-  //       where: eq(users.id, ctx.userId),
-  //     });
+  getCurrent: publicProcedure
+    .query(async ({ ctx }) => {
+      // Add your session/auth check here
+      // This is a placeholder - you should get the user ID from your session
+      const userId = 1; // Replace with actual session user ID
 
-  //     if (!user) {
-  //       throw new TRPCError({
-  //         code: 'NOT_FOUND',
-  //         message: 'User not found',
-  //       });
-  //     }
+      const user = await ctx.db.query.users.findFirst({
+        where: eq(users.id, userId),
+      });
 
-  //     // Verify current password
-  //     const validPassword = await bcrypt.compare(input.currentPassword, user.passwordHash);
-  //     if (!validPassword) {
-  //       throw new TRPCError({
-  //         code: 'UNAUTHORIZED',
-  //         message: 'Current password is incorrect',
-  //       });
-  //     }
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      }
 
-  //     // Hash new password
-  //     const hashedPassword = await bcrypt.hash(input.newPassword, 10);
-
-  //     // Update password
-  //     return await ctx.db
-  //       .update(users)
-  //       .set({ passwordHash: hashedPassword })
-  //       .where(eq(users.id, ctx.userId));
-  //   }),
+      // Don't return password hash
+      const { passwordHash: _, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    }),
 });

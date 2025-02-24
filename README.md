@@ -13,6 +13,12 @@
 - [ ] Edit copy for landing page
 - [ ] Add card in dashboard for total bills, latest past due
 
+## DONE 24 Feb 2025
+- [x] Change nav profile and settings to icons
+- [x] Change nav to reflect logged in user
+- [x] Signin using user from db
+- [x] Adds create user from signup page
+
 ## DONE 23 Feb 2025
 - [x] Edits dashboard view for smaller screen
 - [x] Adds nav component with dashboard, profile and settings
