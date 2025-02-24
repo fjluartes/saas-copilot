@@ -4,7 +4,7 @@
 - Subscription and Billing Management app
 
 ## TODO
-- [ ] User trpc routes (create/update user)
+- [ ] User trpc routes
 - [ ] Subscriptions trpc routes
 - [ ] Payments trpc routes
 - [ ] Add payment (Stripe)
