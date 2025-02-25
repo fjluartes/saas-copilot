@@ -4,6 +4,9 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import type { User } from "~/types/user";
 
+// Email regex pattern from HTML5 spec
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
 export default function SignupForm() {
   const router = useRouter();
   const [formData, setFormData] = useState<User>({
@@ -65,7 +68,8 @@ export default function SignupForm() {
       hasErrors = true;
     }
 
-    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    // Updated email validation
+    if (!EMAIL_REGEX.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
       hasErrors = true;
     }

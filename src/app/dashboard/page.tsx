@@ -3,7 +3,6 @@ import Nav from "~/app/_components/nav";
 import { useState } from "react";
 import { ManageSubscription } from "~/app/_components/manage-subscription";
 import AddSubscription from "~/app/_components/add-subscription";
-// import { type Subscription } from "~/types/subscription";
 import { api } from "~/trpc/react";
 
 export default function Dashboard() {
@@ -11,14 +10,6 @@ export default function Dashboard() {
   
   // Replace static subscriptions with tRPC query
   const { data: subscriptionsList, refetch } = api.subscriptions.getAll.useQuery();
-
-  // Update handleAddSubscription to use tRPC mutation
-  const createSubscription = api.subscriptions.create.useMutation({
-    onSuccess: () => {
-      void refetch();
-      setIsAddSubscriptionOpen(false);
-    },
-  });
 
   // Update the subscriptionsList.map to handle undefined data
   const subscriptions = subscriptionsList ?? [];
