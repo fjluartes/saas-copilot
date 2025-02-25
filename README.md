@@ -5,7 +5,8 @@
 
 ## TODO
 - [ ] Fix login and redirect to dashboard
-- [ ] Subscriptions trpc routes
+- [ ] Fix add subscription in db
+- [ ] Subs getAll query
 - [ ] Payments trpc routes
 - [ ] Add payment (Stripe)
 - [ ] Add auth and protected procedures
