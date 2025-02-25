@@ -13,6 +13,11 @@
 - [ ] Edit copy for landing page
 - [ ] Add card in dashboard for total bills, latest past due
 
+## DONE 25 Feb 2025
+- [x] Edits dashboard add add-subscription
+- [x] Edits add-subscription to add subs in db
+- [x] Edits subscriptions route, dashboard
+
 ## DONE 24 Feb 2025
 - [x] Change nav profile and settings to icons
 - [x] Change nav to reflect logged in user

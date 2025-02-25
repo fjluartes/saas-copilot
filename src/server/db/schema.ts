@@ -20,9 +20,10 @@ export const users = pgTable("users", {
 export const subscriptions = pgTable("subscriptions", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull().references(() => users.id),
-  plan: text("plan").notNull(),
-  status: text("status").notNull(),
+  name: text("name").notNull(),
   price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+  status: text("status").notNull(),
+  nextBilling: timestamp("next_billing").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   expiresAt: timestamp("expires_at").notNull(),
 });

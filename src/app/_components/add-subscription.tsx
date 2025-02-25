@@ -1,29 +1,45 @@
 "use client";
 import { useState } from "react";
+import { api } from "~/trpc/react";
 
 interface AddSubscriptionProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (subscription: {
-    name: string;
-    price: string;
-    status: string;
-    nextBilling: string;
-  }) => void;
 }
 
-export default function AddSubscription({ isOpen, onClose, onAdd }: AddSubscriptionProps) {
+export default function AddSubscription({ isOpen, onClose }: AddSubscriptionProps) {
+  const createSubscription = api.subscriptions.create.useMutation({
+    onSuccess: () => {
+      api.subscriptions.getAll.useQuery();
+      onClose();
+    },
+  });
+
   const [formData, setFormData] = useState({
     name: "",
-    price: "",
+    price: 0,
     status: "Active",
     nextBilling: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onAdd(formData);
-    onClose();
+    try {
+      await createSubscription.mutateAsync({
+        name: formData.name,
+        price: Number(formData.price),
+        status: formData.status,
+        nextBilling: formData.nextBilling,
+      });
+      setFormData({
+        name: "",
+        price: 0,
+        status: "Active",
+        nextBilling: "",
+      });
+    } catch (error) {
+      console.error("Failed to create subscription:", error);
+    }
   };
 
   if (!isOpen) return null;
@@ -72,7 +88,7 @@ export default function AddSubscription({ isOpen, onClose, onAdd }: AddSubscript
                 type="number"
                 id="price"
                 value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
                 className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500"
                 required
                 step="0.01"

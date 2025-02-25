@@ -3,24 +3,25 @@ import Nav from "~/app/_components/nav";
 import { useState } from "react";
 import { ManageSubscription } from "~/app/_components/manage-subscription";
 import AddSubscription from "~/app/_components/add-subscription";
+// import { type Subscription } from "~/types/subscription";
+import { api } from "~/trpc/react";
 
 export default function Dashboard() {
   const [isAddSubscriptionOpen, setIsAddSubscriptionOpen] = useState(false);
-  const [subscriptionsList, setSubscriptionsList] = useState(subscriptions);
+  
+  // Replace static subscriptions with tRPC query
+  const { data: subscriptionsList, refetch } = api.subscriptions.getAll.useQuery();
 
-/*   const handleAddSubscription = (newSubscription: any) => {
-    setSubscriptionsList((prev) => [
-      ...prev,
-      {
-        id: prev.length + 1,
-        ...newSubscription,
-      },
-    ]);
-  }; */
+  // Update handleAddSubscription to use tRPC mutation
+  const createSubscription = api.subscriptions.create.useMutation({
+    onSuccess: () => {
+      void refetch();
+      setIsAddSubscriptionOpen(false);
+    },
+  });
 
-  const handleAddSubscription = () => {
-    console.log("Added subscription");
-  }
+  // Update the subscriptionsList.map to handle undefined data
+  const subscriptions = subscriptionsList ?? [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -89,7 +90,7 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {subscriptionsList.map((subscription, index) => (
+                  {subscriptions.map((subscription, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="flex items-center">
@@ -126,7 +127,7 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900">
-                          {subscription.nextBilling}
+                          {subscription.nextBilling.toLocaleDateString()}
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
@@ -144,7 +145,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="space-y-4 md:hidden">
-            {subscriptionsList.map((subscription, index) => (
+            {subscriptions.map((subscription, index) => (
               <div
                 key={index}
                 className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
@@ -190,7 +191,7 @@ export default function Dashboard() {
                         Next Billing
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900">
-                        {subscription.nextBilling}
+                        {subscription.nextBilling.toLocaleDateString()}
                       </dd>
                     </div>
                   </dl>
@@ -227,32 +228,7 @@ export default function Dashboard() {
       <AddSubscription
         isOpen={isAddSubscriptionOpen}
         onClose={() => setIsAddSubscriptionOpen(false)}
-        onAdd={handleAddSubscription}
       />
     </div>
   );
 }
-
-const subscriptions = [
-  {
-    id: 1,
-    name: "Netflix",
-    price: "15.49",
-    status: "Active",
-    nextBilling: "Mar 21, 2024",
-  },
-  {
-    id: 2,
-    name: "Spotify",
-    price: "9.99",
-    status: "Past Due",
-    nextBilling: "Mar 15, 2024",
-  },
-  {
-    id: 3,
-    name: "Audible",
-    price: "14.95",
-    status: "Cancelled",
-    nextBilling: "N/A",
-  },
-];
