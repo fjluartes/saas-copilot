@@ -4,7 +4,7 @@
 - Subscription and Billing Management app
 
 ## TODO
-- [ ] User trpc routes
+- [ ] Fix login and redirect to dashboard
 - [ ] Subscriptions trpc routes
 - [ ] Payments trpc routes
 - [ ] Add payment (Stripe)
@@ -12,6 +12,7 @@
 - [ ] API for subs vs subscriptions table
 - [ ] Edit copy for landing page
 - [ ] Add card in dashboard for total bills, latest past due
+- [ ] Add correct name in profile icon
 
 ## DONE 25 Feb 2025
 - [x] Edits dashboard add add-subscription
