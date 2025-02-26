@@ -4,7 +4,6 @@
 - Subscription and Billing Management app
 
 ## TODO
-- [ ] Fix login and redirect to dashboard
 - [ ] Fix add subscription in db
 - [ ] Subs getAll query
 - [ ] Payments trpc routes
@@ -14,6 +13,10 @@
 - [ ] Edit copy for landing page
 - [ ] Add card in dashboard for total bills, latest past due
 - [ ] Add correct name in profile icon
+
+## DONE 26 Feb 2025
+- [x] Fix login and redirect to dashboard
+- [x] Add subscription and save to db
 
 ## DONE 25 Feb 2025
 - [x] Edits dashboard add add-subscription
