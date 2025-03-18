@@ -4,15 +4,18 @@
 - Subscription and Billing Management app
 
 ## TODO
-- [ ] Fix add subscription in db
-- [ ] Subs getAll query
+- [ ] Refresh dashboard after add subs
+- [ ] Add correct name in profile icon
 - [ ] Payments trpc routes
 - [ ] Add payment (Stripe)
 - [ ] Add auth and protected procedures
 - [ ] API for subs vs subscriptions table
 - [ ] Edit copy for landing page
 - [ ] Add card in dashboard for total bills, latest past due
-- [ ] Add correct name in profile icon
+
+## DONE 18 Mar 2025
+- [x] Fix add subscription in db
+- [x] Subs getAll query
 
 ## DONE 26 Feb 2025
 - [x] Fix login and redirect to dashboard

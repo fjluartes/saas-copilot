@@ -10,7 +10,8 @@ interface AddSubscriptionProps {
 export default function AddSubscription({ isOpen, onClose }: AddSubscriptionProps) {
   const createSubscription = api.subscriptions.create.useMutation({
     onSuccess: () => {
-      api.subscriptions.getAll.useQuery();
+      // api.subscriptions.getAll.useQuery();
+      alert("Subscription successfully added");
       onClose();
     },
   });
