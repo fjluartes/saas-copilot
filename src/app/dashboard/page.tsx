@@ -8,11 +8,19 @@ import { api } from "~/trpc/react";
 export default function Dashboard() {
   const [isAddSubscriptionOpen, setIsAddSubscriptionOpen] = useState(false);
   
+  // Get tRPC utils for manual invalidation
+  const utils = api.useContext();
+  
   // Replace static subscriptions with tRPC query
   const { data: subscriptionsList, refetch } = api.subscriptions.getAll.useQuery();
 
   // Update the subscriptionsList.map to handle undefined data
   const subscriptions = subscriptionsList ?? [];
+
+  const handleCloseModal =  async () => {
+    setIsAddSubscriptionOpen(false);
+    await utils.subscriptions.getAll.invalidate();
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -218,7 +226,7 @@ export default function Dashboard() {
 
       <AddSubscription
         isOpen={isAddSubscriptionOpen}
-        onClose={() => setIsAddSubscriptionOpen(false)}
+        onClose={handleCloseModal}
       />
     </div>
   );
