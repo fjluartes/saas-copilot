@@ -6,6 +6,9 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { users } from "~/server/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET ?? 'your-secret-key';
 
 export const userRouter = createTRPCRouter({
   // Create new user (signup)
@@ -67,9 +70,23 @@ export const userRouter = createTRPCRouter({
         });
       }
 
+      // Generate JWT token
+      const token = jwt.sign(
+        { 
+          userId: user.id,
+          email: user.email 
+        },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+
       // Don't return password hash
       const { passwordHash: _, ...userWithoutPassword } = user;
-      return userWithoutPassword;
+      
+      return {
+        ...userWithoutPassword,
+        token,
+      };
     }),
 
   getCurrent: publicProcedure

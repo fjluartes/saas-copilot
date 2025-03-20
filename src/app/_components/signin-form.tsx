@@ -3,9 +3,13 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "~/lib/session";
+import Cookies from 'js-cookie';
 
 export default function SigninForm() {
   const router = useRouter();
+  const setSession = useSession((state) => state.setSession);
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,11 +19,28 @@ export default function SigninForm() {
   const [error, setError] = useState("");
 
   const signin = api.user.signin.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Set session in Zustand store
+      setSession(data.token, {
+        id: data.id,
+        email: data.email,
+        name: data.name,
+      });
+
+      // Set cookie if remember me is checked
+      if (formData.rememberMe) {
+        Cookies.set('auth-token', data.token, { expires: 7 }); // Expires in 7 days
+      } else {
+        Cookies.set('auth-token', data.token); // Session cookie
+      }
+
       router.push("/dashboard");
     },
     onError: (error) => {
       setError(error.message);
+      // Clear any existing session data on error
+      useSession.getState().clearSession();
+      Cookies.remove('auth-token');
     },
   });
 
@@ -34,10 +55,16 @@ export default function SigninForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    signin.mutate({
-      email: formData.email,
-      password: formData.password,
-    });
+    setError("");
+
+    try {
+      await signin.mutateAsync({
+        email: formData.email,
+        password: formData.password,
+      });
+    } catch (error) {
+      console.error("Signin error:", error);
+    }
   };
 
   return (
