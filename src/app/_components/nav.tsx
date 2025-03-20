@@ -3,10 +3,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
+import { useSession } from "~/lib/session";
+import Cookies from 'js-cookie';
 
 export default function Nav() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const router = useRouter();
+  const clearSession = useSession((state) => state.clearSession);
   
   // Add error handling and loading state
   const { 
@@ -18,6 +21,9 @@ export default function Nav() {
   });
 
   const handleSignOut = () => {
+    clearSession();
+    Cookies.remove('auth-token');
+    // void api.useContext().invalidate();
     router.push("/signin");
   };
 

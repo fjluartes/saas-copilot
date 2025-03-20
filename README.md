@@ -4,7 +4,6 @@
 - Subscription and Billing Management app
 
 ## TODO
-- [ ] Add correct name in profile icon
 - [ ] Check user and subs CRUD
 - [ ] Payments trpc routes
 - [ ] Add payment (Stripe)
@@ -12,6 +11,11 @@
 - [ ] API for subs vs subscriptions table
 - [ ] Edit copy for landing page
 - [ ] Add card in dashboard for total bills, latest past due
+
+## DONE 20 Mar 2025
+- [x] Fixed signin with session/cookie data
+- [x] Clear session on logout
+- [ ] Add correct name in profile icon
 
 ## DONE 18 Mar 2025
 - [x] Fix add subscription in db
